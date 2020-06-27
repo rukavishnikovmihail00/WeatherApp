@@ -16,17 +16,29 @@ def index(request):
     cities = City.objects.all()
 
     all_cities = []
+    check = False
 
     for city in cities: 
         res = requests.get(url.format(city.name)).json() # конвертирует json формат в словари
-        city_info = {
-            'city': city.name,
-            'temp': res["main"]["temp"],
-            'icon': res["weather"][0]["icon"]
-        }
+        try:
+            city_info = {
+                'city': city.name,
+                'temp': res["main"]["temp"],
+                'icon': res["weather"][0]["icon"]
+            }
+            all_cities.append(city_info)
+        except KeyError:
+            check = True
 
-        all_cities.append(city_info)
+    
 
     context = {'all_info':all_cities, 'form':form}
     
-    return render(request, 'weather/index.html', context)
+    return render(request, 'weather/index.html' , context)
+
+def info(request):
+    return render(request, 'weather/info.html')
+
+
+def contacts(request):
+    return render(request, 'weather/contacts.html')
