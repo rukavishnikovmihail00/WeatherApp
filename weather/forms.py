@@ -11,3 +11,5 @@ class CityForm(ModelForm):
             'id': 'city', 
             'placeholder': 'Введите название'
             })}
+
+

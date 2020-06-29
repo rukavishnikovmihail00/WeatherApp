@@ -6,6 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Погода в реальном времени</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </head>
 <body>
     <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
@@ -37,20 +39,30 @@
                     <div class="row">
                         <div class="col-9">
                             <b>Город:</b> {{ info.city }}<br>
-                            <b>Температура:</b> {{ info.temp }}<sup>0</sup>
-                            <!--a class="mt-2 btn btn-outline-danger" type="submit" href="#">Удалить</a>-->
+                            <b>Температура:</b> {{ info.temp }}<sup>o</sup>
+                            
                         </div>
                         <div class="col-2 offset-1">
                             <img src="http://openweathermap.org/img/w/{{ info.icon }}.png" style="position:absolute;left:-60px;right:100px" width=60 height=60 alt="Фото погоды">
                         </div>
                     </div>
+                    <button class="mt-1 btn btn-info" type="button" data-toggle="collapse" data-target="#{{ info }}"
+                                                aria-expanded="false" aria-controls="{{ info }}">Подробнее</button>
+                        <div class="collapse" id="{{ info }}">
+                            <b>Небо:</b> {{ info.desc }}<br>
+                            <b>Ощущается как:</b> {{ info.feel }}<sup>o</sup>
+                        </div>       
                 </div>
                 {% endfor %}
             </div>
         </div>
     </div>
     <div class="container" align="center">
+        <br>
+        <br>
         <hr>
         &copy; All rights reserved 2020
+        <br>
+        <br>
 </body>
 </html>
