@@ -2,6 +2,7 @@ from django.shortcuts import render
 import requests
 from .models import City
 from .forms import CityForm
+import datetime
 # Create your views here.
 def index(request):
     appid = '47c065c2228f4a548bca5be0928f933f'
@@ -21,12 +22,14 @@ def index(request):
 
     for city in cities: 
         res = requests.get(url.format(city.name)).json() # конвертирует json формат в словари
-        lat = res["coord"]["lat"]
-        lon = res["coord"]["lon"]
-        url_hourly = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + str(lat) + '&lon=' + str(lon)  + '&exclude=daily&appid=' + appid
-        res_hourly = requests.get(url_hourly).json()
-        #if (city.name == 'Moscow'):
-            #print(res_hourly)
+        #lat = res["coord"]["lat"]
+        #lon = res["coord"]["lon"]
+        #url_hourly = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + str(lat) + '&lon=' + str(lon)  + '&exclude=hourly,daily&appid=' + appid
+        #res_hourly = requests.get(url_hourly).json()
+        sunrise_time = res["sys"]["sunrise"]
+        sunset_time = res["sys"]["sunset"]
+        sunrise = datetime.datetime.fromtimestamp(int(sunrise_time)).strftime('%H:%M')
+        sunset = datetime.datetime.fromtimestamp(int(sunset_time)).strftime('%H:%M')
         try:
             city_info = {
                 'city': city.name,
@@ -34,8 +37,11 @@ def index(request):
                 'icon': res["weather"][0]["icon"],
                 'desc': res["weather"][0]["description"],
                 'feel': res["main"]["feels_like"],
-               # 'min': res_hourly["daily"][0]["min"],
-               # 'max': res_hourly["daily"][0]["max"],
+                'humid': res["main"]["humidity"],
+                'wind': res["wind"]["speed"],
+                'clouds': res["clouds"]["all"],
+                'sunrise': sunrise,
+                'sunset': sunset,
             }
 
             
